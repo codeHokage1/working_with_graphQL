@@ -22,6 +22,17 @@ const resolvers = {
   Review: {
     game: (parent) => db.games.find((game) => game.id === parent.game_id),
     author: (parent) => db.authors.find((author) => author.id === parent.author_id)
+  },
+  Mutation: {
+    addGame: (parent, { input }) => {
+      const newGame = { id: String(db.games.length + 1), ...input };
+      db.games.push(newGame);
+      return newGame;
+    },
+    deleteGame: (parent, { id }) => {
+      db.games = db.games.filter((game) => game.id !== id);
+      return db.games;
+    }
   }
 };
 
