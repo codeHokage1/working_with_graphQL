@@ -32,8 +32,19 @@ const resolvers = {
     deleteGame: (parent, { id }) => {
       db.games = db.games.filter((game) => game.id !== id);
       return db.games;
-    }
-  }
+    },
+    updateGame: (_, args) => {
+      const { id, updates } = args;
+      db.games = db.games.map(game => {
+        if (game.id === id) {
+          return { ...game, ...updates };
+        }
+        return game;
+      })
+
+      return db.games.find(game => game.id === id);
+    }}
+
 };
 
 const server = new ApolloServer({
